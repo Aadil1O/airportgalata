@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Cringe Santa ✈</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0c0c0c;--card:#161616;--border:#252525;
+  --yellow:#f2df00;--orange:#ff5500;--green:#00d97e;--red:#ff3333;
+  --text:#f0ead8;--muted:#3a3a3a;--muted2:#777;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;}
+body{display:flex;flex-direction:column;align-items:center;}
+.stripe{width:100%;height:4px;flex-shrink:0;background:repeating-linear-gradient(90deg,var(--yellow) 0 18px,var(--orange) 18px 36px,var(--green) 36px 54px,var(--red) 54px 72px);}
+.screen{width:100%;max-width:460px;padding:2rem 1.25rem;display:flex;flex-direction:column;align-items:center;}
+.screen.hidden{display:none;}
+
+/* Loading */
+#s-load{justify-content:center;min-height:80vh;}
+.spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--yellow);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:1rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.load-txt{font-size:.6rem;letter-spacing:.25em;color:var(--muted2);}
+
+/* Header */
+.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,15vw,5.5rem);line-height:.88;color:var(--yellow);text-shadow:3px 3px 0 var(--orange);text-align:center;margin:1.5rem 0 .4rem;}
+.logo-sub{font-size:.55rem;letter-spacing:.3em;color:var(--muted2);text-align:center;margin-bottom:.5rem;}
+.badge{display:inline-block;background:var(--orange);color:#000;font-size:.5rem;font-weight:700;letter-spacing:.25em;padding:3px 10px;margin-bottom:1.8rem;}
+.hint{font-size:.62rem;color:var(--muted2);text-align:center;line-height:2;letter-spacing:.05em;margin-bottom:1.4rem;}
+
+/* Name list */
+.names-list{width:100%;display:flex;flex-direction:column;gap:9px;}
+.name-btn{
+  width:100%;background:var(--card);border:1px solid var(--border);
+  color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:.08em;
+  padding:.85rem 1.2rem;text-align:left;cursor:pointer;
+  display:flex;align-items:center;gap:.75rem;
+  transition:border-color .12s,background .12s;
+  -webkit-tap-highlight-color:transparent;
+}
+.name-btn:hover{background:#1c1c1c;border-color:var(--yellow);}
+.name-btn .em{font-size:1rem;}
+.name-btn .ck{margin-left:auto;font-size:.65rem;font-family:'Space Mono',monospace;color:var(--green);opacity:0;letter-spacing:.05em;}
+.name-btn.done .ck{opacity:1;}
+.name-btn.done{border-color:#1a3d2a;}
+.name-btn.done .nl{color:var(--muted2);}
+
+/* Confirm */
+.confirm-wrap{width:100%;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;}
+.c-icon{font-size:3.5rem;}
+.c-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,10vw,3.8rem);text-align:center;line-height:1.05;}
+.c-q em{font-style:normal;color:var(--yellow);}
+.c-note{font-size:.58rem;color:var(--muted2);letter-spacing:.15em;text-align:center;line-height:2;max-width:240px;}
+.btn-row{display:flex;gap:10px;width:100%;}
+.btn{
+  flex:1;background:transparent;border:1px solid var(--border);
+  color:var(--muted2);font-family:'Space Mono',monospace;
+  font-size:.62rem;letter-spacing:.2em;padding:.8rem;
+  cursor:pointer;text-transform:uppercase;
+  transition:background .12s,color .12s,border-color .12s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:hover{background:#1c1c1c;color:var(--text);}
+.btn.y{border-color:var(--yellow);color:var(--yellow);}
+.btn.y:hover{background:var(--yellow);color:#000;}
+
+/* Reveal */
+.reveal-wrap{width:100%;display:flex;flex-direction:column;align-items:center;padding-top:.3rem;}
+.eyes{font-size:.52rem;letter-spacing:.28em;color:var(--red);text-align:center;margin-bottom:1rem;animation:blink 1.1s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+.pass{width:100%;background:var(--text);color:#111;padding:1.4rem;}
+.pass::after{content:'';display:block;height:10px;background:repeating-linear-gradient(90deg,var(--text) 0 8px,transparent 8px 14px);margin:0 -1.4rem -1.4rem;}
+.p-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1.5px dashed #bbb;}
+.p-lbl{font-size:.46rem;letter-spacing:.25em;color:#888;text-transform:uppercase;margin-bottom:1px;}
+.p-val{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.05em;line-height:1;color:#111;}
+.p-val.big{font-size:2.8rem;color:var(--orange);}
+.p-mission{background:#111;color:var(--yellow);padding:.75rem .9rem;margin-top:.9rem;font-size:.58rem;letter-spacing:.1em;line-height:1.9;}
+.p-mission strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:.1em;margin-bottom:.1rem;}
+.bcode{display:flex;gap:2px;align-items:flex-end;justify-content:center;margin-top:1.1rem;padding-top:1rem;border-top:1.5px dashed #bbb;}
+.bcode span{background:#111;display:inline-block;}
+.r-note{font-size:.58rem;color:var(--muted2);letter-spacing:.1em;text-align:center;line-height:2;margin-top:1.6rem;max-width:280px;}
+.r-btn{margin-top:1.2rem;width:100%;}
+
+/* Confetti */
+.dot{position:fixed;pointer-events:none;border-radius:2px;animation:fall 2.4s ease-in forwards;}
+@keyframes fall{0%{transform:translateY(-10px) rotate(0);opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
+
+footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:center;padding:2rem 0 1.5rem;}
+</style>
+</head>
+<body>
+<div class="stripe"></div>
+
+<!-- Loading -->
+<div class="screen" id="s-load">
+  <div class="spinner"></div>
+  <div class="load-txt">BOARDING IN PROGRESS...</div>
+</div>
+
+<!-- Pick name -->
+<div class="screen hidden" id="s1">
+  <div class="logo">CRINGE<br>SANTA ✈</div>
+  <div class="logo-sub">Airport Edition · The T-Shirt Drop</div>
+  <div class="badge">TOP SECRET · FLIGHT CRG-2025</div>
+  <p class="hint">Tap your name — alone.<br>No peeking allowed.</p>
+  <div class="names-list" id="nameList"></div>
+</div>
+
+<!-- Confirm -->
+<div class="screen hidden" id="s2">
+  <div class="confirm-wrap">
+    <div class="c-icon">🛂</div>
+    <div class="c-q">Are you<br><em id="c-name">—</em>?</div>
+    <p class="c-note">Make sure nobody else<br>is looking at your screen right now.</p>
+    <div class="btn-row">
+      <button class="btn" id="btn-no">✕ Not me</button>
+      <button class="btn y" id="btn-yes">✓ That's me</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reveal -->
+<div class="screen hidden" id="s3">
+  <div class="reveal-wrap">
+    <div class="eyes">⚠ FOR YOUR EYES ONLY ⚠</div>
+    <div class="pass">
+      <div class="p-hdr">
+        <div>
+          <div class="p-lbl">gift buyer</div>
+          <div class="p-val" id="p-from">—</div>
+        </div>
+        <div style="text-align:right">
+          <div class="p-lbl">flight</div>
+          <div class="p-val">CRG-2025</div>
+        </div>
+      </div>
+      <div>
+        <div class="p-lbl">you are buying for 🎯</div>
+        <div class="p-val big" id="p-to">—</div>
+      </div>
+      <div class="p-mission">
+        <strong>MISSION BRIEFING</strong>
+        Find the most cringe t-shirt humanly possible.<br>
+        They WILL wear it at the airport. No exceptions.<br>
+        No mercy. Maximum embarrassment.
+      </div>
+      <div class="bcode" id="bcode"></div>
+    </div>
+    <p class="r-note">Screenshot this or memorise it.<br>This screen won't show again.</p>
+    <div class="r-btn">
+      <button class="btn y" style="width:100%" id="btn-done">✓ Got it — close</button>
+    </div>
+  </div>
+</div>
+
+<footer>BOARDING GATE B7 · CRINGE AIRLINES</footer>
+
+<script>
+const NAMES = ["Sanan","Saalis","Aadil","Taqi","Sameer"];
+const EMOJIS = {"Sanan":"🎭","Saalis":"🤡","Aadil":"🦄","Taqi":"👽","Sameer":"🎪"};
+const STORAGE_KEY = "csg-assignments-2025";
+const SEEN_KEY    = "csg-seen-2025";
+
+let assignments = {};
+let seen = {};
+let picking = null;
+
+function derange(arr) {
+  let a, tries = 0;
+  do {
+    a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    tries++;
+  } while (a.some((v, i) => v === arr[i]) && tries < 500);
+  return a;
+}
+
+async function init() {
+  try {
+    // Try to load existing shared assignments
+    const existing = await window.storage.get(STORAGE_KEY, true);
+    if (existing && existing.value) {
+      assignments = JSON.parse(existing.value);
+    } else {
+      // First person in — generate and save for everyone
+      const shuffled = derange(NAMES);
+      NAMES.forEach((n, i) => { assignments[n] = shuffled[i]; });
+      await window.storage.set(STORAGE_KEY, JSON.stringify(assignments), true);
+    }
+  } catch(e) {
+    // Storage unavailable — fall back to a fixed derangement seeded consistently
+    const fixed = ["Taqi","Aadil","Sameer","Sanan","Saalis"];
+    NAMES.forEach((n, i) => { assignments[n] = fixed[i]; });
+  }
+
+  // Load who's already been seen (personal, non-shared)
+  try {
+    const s = await window.storage.get(SEEN_KEY, false);
+    if (s && s.value) seen = JSON.parse(s.value);
+  } catch(e) { seen = {}; }
+
+  buildList();
+  show('s1');
+}
+
+function buildList() {
+  const list = document.getElementById('nameList');
+  list.innerHTML = '';
+  NAMES.forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'name-btn' + (seen[n] ? ' done' : '');
+    btn.dataset.name = n;
+    btn.innerHTML = `<span class="em">${EMOJIS[n]}</span><span class="nl">${n}</span><span class="ck">✓ done</span>`;
+    btn.addEventListener('click', () => {
+      picking = n;
+      document.getElementById('c-name').textContent = n;
+      show('s2');
+    });
+    list.appendChild(btn);
+  });
+}
+
+document.getElementById('btn-no').addEventListener('click', () => { picking = null; show('s1'); });
+
+document.getElementById('btn-yes').addEventListener('click', () => {
+  document.getElementById('p-from').textContent = picking.toUpperCase();
+  document.getElementById('p-to').textContent = assignments[picking].toUpperCase();
+  buildBarcode();
+  confetti();
+  show('s3');
+});
+
+document.getElementById('btn-done').addEventListener('click', async () => {
+  seen[picking] = true;
+  try { await window.storage.set(SEEN_KEY, JSON.stringify(seen), false); } catch(e) {}
+  const btn = document.querySelector(`.name-btn[data-name="${picking}"]`);
+  if (btn) btn.classList.add('done');
+  picking = null;
+  show('s1');
+});
+
+function buildBarcode() {
+  const bc = document.getElementById('bcode');
+  bc.innerHTML = '';
+  for (let i = 0; i < 52; i++) {
+    const s = document.createElement('span');
+    s.style.cssText = `height:${18+Math.floor(Math.random()*28)}px;width:${Math.random()<.3?3:1}px;`;
+    bc.appendChild(s);
+  }
+}
+
+function show(id) {
+  ['s-load','s1','s2','s3'].forEach(s => {
+    document.getElementById(s).classList.toggle('hidden', s !== id);
+  });
+  window.scrollTo(0, 0);
+}
+
+function confetti() {
+  const cols = ['#f2df00','#ff5500','#00d97e','#ff3333','#f0ead8'];
+  for (let i = 0; i < 50; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    d.style.cssText = `left:${Math.random()*100}%;top:-12px;width:${3+Math.random()*8}px;height:${4+Math.random()*8}px;background:${cols[i%cols.length]};animation-delay:${Math.random()*.6}s;animation-duration:${1.8+Math.random()*1.8}s;`;
+    document.body.appendChild(d);
+    d.addEventListener('animationend', () => d.remove());
+  }
+}
+
+init();
+</script>
+</body>
+</html>
