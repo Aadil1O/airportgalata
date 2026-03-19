@@ -7,95 +7,180 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--bg:#0c0c0c;--card:#161616;--border:#252525;--yellow:#f2df00;--orange:#ff5500;--green:#00d97e;--red:#ff3333;--text:#f0ead8;--muted:#3a3a3a;--muted2:#777;}
-html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;}
+:root{
+  --bg:#0a0a0a;--card:#141414;--border:#222;
+  --yellow:#f2df00;--orange:#ff5500;--green:#00d97e;--red:#ff3333;--blue:#00aaff;
+  --text:#f0ead8;--muted:#333;--muted2:#666;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;overflow-x:hidden;}
 body{display:flex;flex-direction:column;align-items:center;}
-.stripe{width:100%;height:4px;flex-shrink:0;background:repeating-linear-gradient(90deg,var(--yellow) 0 18px,var(--orange) 18px 36px,var(--green) 36px 54px,var(--red) 54px 72px);}
-.screen{width:100%;max-width:460px;padding:2rem 1.25rem;display:flex;flex-direction:column;align-items:center;}
+
+/* ── SCANLINE OVERLAY ── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.15) 2px,rgba(0,0,0,.15) 4px);z-index:999;}
+
+/* ── ANIMATED STRIPE ── */
+.stripe{width:100%;height:5px;flex-shrink:0;background:repeating-linear-gradient(90deg,var(--yellow) 0 18px,var(--orange) 18px 36px,var(--green) 36px 54px,var(--red) 54px 72px);background-size:200% 100%;animation:stripeMove 3s linear infinite;}
+@keyframes stripeMove{to{background-position:200% 0;}}
+
+/* ── FLOATING PARTICLES BG ── */
+#particles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+.particle{position:absolute;width:2px;height:2px;background:var(--yellow);border-radius:50%;opacity:0;animation:floatUp var(--d,8s) var(--delay,0s) linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh) translateX(0);opacity:0;}10%{opacity:.4;}90%{opacity:.1;}100%{transform:translateY(-10vh) translateX(var(--drift,20px));opacity:0;}}
+
+/* ── SCREENS ── */
+.screen{width:100%;max-width:480px;padding:2rem 1.25rem;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;}
 .screen.hidden{display:none;}
 
-/* Loading */
-.load-wrap{min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;}
-.spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--yellow);border-radius:50%;animation:spin .7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.load-txt{font-size:.6rem;letter-spacing:.25em;color:var(--muted2);}
+/* ── LOADING ── */
+.load-wrap{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;}
+.load-logo{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--yellow);text-shadow:0 0 30px rgba(242,223,0,.4);animation:pulse 1.5s ease-in-out infinite alternate;letter-spacing:.1em;}
+@keyframes pulse{from{opacity:.4;transform:scale(.97);}to{opacity:1;transform:scale(1);}}
+.load-bar-wrap{width:200px;height:3px;background:var(--border);}
+.load-bar{height:100%;width:0;background:var(--yellow);animation:loadFill 1.5s ease-out forwards;}
+@keyframes loadFill{to{width:100%;}}
+.load-txt{font-size:.55rem;letter-spacing:.3em;color:var(--muted2);}
 
-/* S1 */
-.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,15vw,5.5rem);line-height:.88;color:var(--yellow);text-shadow:3px 3px 0 var(--orange);text-align:center;margin:1.5rem 0 .4rem;}
+/* ── S1 HEADER ── */
+.logo-wrap{position:relative;text-align:center;margin:1.5rem 0 .4rem;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,16vw,6rem);line-height:.85;color:var(--yellow);letter-spacing:.05em;position:relative;}
+.logo .glitch{position:absolute;inset:0;font-family:'Bebas Neue',sans-serif;font-size:inherit;line-height:inherit;letter-spacing:inherit;color:var(--orange);clip-path:inset(0);animation:glitch 4s infinite;}
+@keyframes glitch{0%,95%,100%{transform:none;opacity:0;}96%{transform:translate(-3px,1px);opacity:.8;clip-path:inset(30% 0 50% 0);}97%{transform:translate(3px,-1px);opacity:.6;clip-path:inset(60% 0 10% 0);}98%{transform:translate(-2px,2px);opacity:.7;clip-path:inset(10% 0 70% 0);}99%{transform:none;opacity:0;}}
+.logo-plane{font-size:2.5rem;display:block;animation:flyIn 1s cubic-bezier(.17,.67,.35,1.2) forwards;transform:translateX(-80px);opacity:0;}
+@keyframes flyIn{to{transform:translateX(0);opacity:1;}}
 .logo-sub{font-size:.55rem;letter-spacing:.3em;color:var(--muted2);text-align:center;margin-bottom:.5rem;}
-.badge{display:inline-block;background:var(--orange);color:#000;font-size:.5rem;font-weight:700;letter-spacing:.25em;padding:3px 10px;margin-bottom:1.8rem;}
+.badge{display:inline-block;background:var(--orange);color:#000;font-size:.5rem;font-weight:700;letter-spacing:.25em;padding:3px 10px;margin-bottom:1.8rem;animation:badgePop .5s .8s cubic-bezier(.17,.67,.35,1.5) both;}
+@keyframes badgePop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
 .hint{font-size:.62rem;color:var(--muted2);text-align:center;line-height:2;letter-spacing:.05em;margin-bottom:1.4rem;}
-.names-list{width:100%;display:flex;flex-direction:column;gap:9px;}
-.name-btn{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:.08em;padding:.85rem 1.2rem;text-align:left;cursor:pointer;display:flex;align-items:center;gap:.75rem;transition:border-color .12s,background .12s;-webkit-tap-highlight-color:transparent;}
-.name-btn:hover:not(.done){background:#1c1c1c;border-color:var(--yellow);}
-.name-btn.done{border-color:#1a3d2a;pointer-events:none;}
-.name-btn.done .nl{color:var(--muted2);}
-.name-btn .em{font-size:1rem;}
-.name-btn .ck{margin-left:auto;font-size:.6rem;font-family:'Space Mono',monospace;color:var(--green);opacity:0;}
-.name-btn.done .ck{opacity:1;}
 
-/* S2 */
-.confirm-wrap{width:100%;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;}
-.c-icon{font-size:3.5rem;}
-.c-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,10vw,3.8rem);text-align:center;line-height:1.05;}
-.c-q em{font-style:normal;color:var(--yellow);}
+/* ── COUNTDOWN BAR ── */
+.countdown{width:100%;margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem;}
+.cd-label{font-size:.5rem;letter-spacing:.2em;color:var(--muted2);white-space:nowrap;}
+.cd-dots{display:flex;gap:6px;}
+.cd-dot{width:8px;height:8px;border-radius:50%;background:var(--border);border:1px solid var(--muted);transition:background .3s,border-color .3s;}
+.cd-dot.lit{background:var(--green);border-color:var(--green);box-shadow:0 0 6px var(--green);}
+
+/* ── NAME BUTTONS ── */
+.names-list{width:100%;display:flex;flex-direction:column;gap:8px;}
+.name-btn{
+  width:100%;background:var(--card);border:1px solid var(--border);
+  color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:2rem;
+  letter-spacing:.08em;padding:.85rem 1.2rem;text-align:left;cursor:pointer;
+  display:flex;align-items:center;gap:.75rem;
+  transition:border-color .15s,background .15s,transform .1s;
+  -webkit-tap-highlight-color:transparent;
+  animation:slideIn .4s var(--delay,.1s) both;
+}
+@keyframes slideIn{from{transform:translateX(-30px);opacity:0;}to{transform:none;opacity:1;}}
+.name-btn:hover:not(.done){background:#1a1a1a;border-color:var(--yellow);transform:translateX(4px);}
+.name-btn:active:not(.done){transform:scale(.98);}
+.name-btn.done{border-color:#1a3d2a;pointer-events:none;opacity:.7;}
+.name-btn.done .nl{color:var(--muted2);}
+.name-btn .em{font-size:1.1rem;}
+.name-btn .nl{flex:1;}
+.name-btn .ck{font-size:.58rem;font-family:'Space Mono',monospace;color:var(--green);opacity:0;transition:opacity .3s;}
+.name-btn.done .ck{opacity:1;}
+.name-btn .arrow{font-size:.8rem;color:var(--muted2);transition:transform .2s,color .2s;}
+.name-btn:hover:not(.done) .arrow{transform:translateX(4px);color:var(--yellow);}
+.name-btn.done .arrow{display:none;}
+
+/* ── CONFIRM ── */
+.confirm-wrap{width:100%;min-height:85vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;}
+.c-icon{font-size:4rem;animation:bounce .6s ease-in-out infinite alternate;}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-8px);}}
+.c-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,12vw,4rem);text-align:center;line-height:1;}
+.c-q em{font-style:normal;color:var(--yellow);display:block;}
 .c-note{font-size:.58rem;color:var(--muted2);letter-spacing:.15em;text-align:center;line-height:2;max-width:240px;}
 .btn-row{display:flex;gap:10px;width:100%;}
-.btn{flex:1;background:transparent;border:1px solid var(--border);color:var(--muted2);font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.2em;padding:.8rem;cursor:pointer;text-transform:uppercase;transition:background .12s,color .12s,border-color .12s;-webkit-tap-highlight-color:transparent;}
-.btn:hover{background:#1c1c1c;color:var(--text);}
+.btn{flex:1;background:transparent;border:1px solid var(--border);color:var(--muted2);font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.2em;padding:.85rem;cursor:pointer;text-transform:uppercase;transition:background .12s,color .12s,border-color .12s,transform .1s;-webkit-tap-highlight-color:transparent;}
+.btn:hover{background:#1a1a1a;color:var(--text);}
+.btn:active{transform:scale(.97);}
 .btn.y{border-color:var(--yellow);color:var(--yellow);}
 .btn.y:hover{background:var(--yellow);color:#000;}
 
-/* S3 */
+/* ── REVEAL ── */
 .reveal-wrap{width:100%;display:flex;flex-direction:column;align-items:center;padding-top:.3rem;}
-.eyes{font-size:.52rem;letter-spacing:.28em;color:var(--red);text-align:center;margin-bottom:1rem;animation:blink 1.1s step-end infinite;}
+.eyes{font-size:.52rem;letter-spacing:.28em;color:var(--red);text-align:center;margin-bottom:1rem;animation:blink 1s step-end infinite;}
 @keyframes blink{50%{opacity:0;}}
-.pass{width:100%;background:var(--text);color:#111;padding:1.4rem;}
-.pass-tear{height:10px;background:repeating-linear-gradient(90deg,var(--text) 0 8px,transparent 8px 14px);}
-.p-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1.5px dashed #bbb;}
-.p-lbl{font-size:.46rem;letter-spacing:.25em;color:#888;text-transform:uppercase;margin-bottom:1px;}
-.p-val{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.05em;line-height:1;color:#111;}
-.p-val.big{font-size:2.8rem;color:var(--orange);}
-.size-row{display:flex;align-items:center;gap:.75rem;margin-top:.9rem;padding:.75rem .9rem;border:1.5px dashed #bbb;background:#faf7ee;}
-.size-icon{font-size:1.5rem;}
+
+/* Boarding pass */
+.pass{width:100%;background:var(--text);color:#111;padding:1.5rem;animation:passSlide .5s cubic-bezier(.17,.67,.35,1.2) both;}
+@keyframes passSlide{from{transform:translateY(40px) rotate(-2deg);opacity:0;}to{transform:none;opacity:1;}}
+.pass-tear{height:12px;background:repeating-linear-gradient(90deg,var(--text) 0 8px,transparent 8px 15px);}
+.p-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:2px dashed #ccc;}
+.p-lbl{font-size:.44rem;letter-spacing:.28em;color:#999;text-transform:uppercase;margin-bottom:2px;}
+.p-val{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em;line-height:1;color:#111;}
+.p-val.big{font-size:3rem;color:var(--orange);animation:targetPop .4s .4s cubic-bezier(.17,.67,.35,1.5) both;}
+@keyframes targetPop{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.size-row{display:flex;align-items:center;gap:.75rem;margin-top:.9rem;padding:.75rem;border:2px dashed #ccc;background:#f5f0e0;}
+.size-icon{font-size:1.6rem;}
 .size-text{display:flex;flex-direction:column;gap:2px;}
-.size-lbl{font-size:.44rem;letter-spacing:.25em;color:#888;text-transform:uppercase;}
-.size-val{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#111;letter-spacing:.05em;line-height:1.1;}
-.p-mission{background:#111;color:var(--yellow);padding:.75rem .9rem;margin-top:.9rem;font-size:.58rem;letter-spacing:.1em;line-height:1.9;}
-.p-mission strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:.1em;margin-bottom:.1rem;}
-.bcode{display:flex;gap:2px;align-items:flex-end;justify-content:center;margin-top:1.1rem;padding-top:1rem;border-top:1.5px dashed #bbb;}
+.size-lbl{font-size:.44rem;letter-spacing:.28em;color:#999;text-transform:uppercase;}
+.size-val{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#111;letter-spacing:.05em;}
+.p-mission{background:#111;color:var(--yellow);padding:.8rem .9rem;margin-top:.9rem;font-size:.58rem;letter-spacing:.1em;line-height:2;}
+.p-mission strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;margin-bottom:.2rem;}
+.p-mission .rule{display:flex;align-items:flex-start;gap:.5rem;margin:0;}
+.p-mission .rule::before{content:'→';color:var(--orange);flex-shrink:0;}
+.bcode{display:flex;gap:2px;align-items:flex-end;justify-content:center;margin-top:1.2rem;padding-top:1rem;border-top:2px dashed #ccc;}
 .bcode span{background:#111;display:inline-block;}
-.r-note{font-size:.58rem;color:var(--muted2);letter-spacing:.1em;text-align:center;line-height:2;margin-top:1.6rem;max-width:280px;}
+.r-note{font-size:.58rem;color:var(--muted2);letter-spacing:.1em;text-align:center;line-height:2;margin-top:1.5rem;max-width:280px;}
 .r-btn{margin-top:1.2rem;width:100%;}
 
-/* S4 */
-.done-wrap{width:100%;min-height:75vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;text-align:center;}
-.done-icon{font-size:5rem;}
-.done-title{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--green);letter-spacing:.1em;}
-.done-note{font-size:.62rem;color:var(--muted2);letter-spacing:.12em;line-height:2.2;max-width:260px;}
+/* ── DONE SCREEN ── */
+.done-wrap{width:100%;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;text-align:center;position:relative;overflow:hidden;}
+.rickroll-wrap{width:100%;max-width:380px;position:relative;margin-bottom:1.5rem;}
+.rickroll-wrap::before{content:'🚨 MANDATORY VIEWING 🚨';display:block;background:var(--red);color:#fff;font-size:.5rem;letter-spacing:.2em;padding:5px 10px;font-weight:700;}
+.rickroll-wrap iframe{width:100%;aspect-ratio:16/9;border:none;display:block;}
+.done-title{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--green);letter-spacing:.1em;animation:donePop .5s cubic-bezier(.17,.67,.35,1.5) both;}
+@keyframes donePop{from{transform:scale(0) rotate(-10deg);}to{transform:scale(1) rotate(0);}}
+.done-note{font-size:.6rem;color:var(--muted2);letter-spacing:.1em;line-height:2.2;max-width:280px;margin-top:.8rem;}
+.done-rules{width:100%;max-width:380px;border:1px solid var(--border);background:var(--card);padding:1rem 1.2rem;margin-top:1.2rem;text-align:left;}
+.done-rules .r-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--orange);letter-spacing:.1em;margin-bottom:.8rem;}
+.done-rule{font-size:.58rem;color:var(--muted2);line-height:2;letter-spacing:.05em;display:flex;gap:.6rem;align-items:flex-start;}
+.done-rule::before{content:'✦';color:var(--yellow);flex-shrink:0;}
 
-.dot{position:fixed;pointer-events:none;border-radius:2px;animation:fall 2.4s ease-in forwards;}
+/* ── CONFETTI ── */
+.dot{position:fixed;pointer-events:none;border-radius:2px;animation:fall var(--dur,2.4s) var(--del,0s) ease-in forwards;z-index:998;}
 @keyframes fall{0%{transform:translateY(-10px) rotate(0);opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
-footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:center;padding:1.5rem 0;}
+
+footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:center;padding:1.5rem 0;position:relative;z-index:1;}
 </style>
 </head>
 <body>
+<div id="particles"></div>
 <div class="stripe"></div>
 
 <!-- S0: Loading -->
 <div class="screen" id="s0">
   <div class="load-wrap">
-    <div class="spinner"></div>
-    <div class="load-txt">BOARDING IN PROGRESS...</div>
+    <div class="load-logo">✈ CRG</div>
+    <div class="load-bar-wrap"><div class="load-bar"></div></div>
+    <div class="load-txt">CONNECTING TO CRINGE DATABASE...</div>
   </div>
 </div>
 
 <!-- S1: Pick name -->
 <div class="screen hidden" id="s1">
-  <div class="logo">CRINGE<br>SANTA ✈</div>
-  <div class="logo-sub">Airport Edition · The T-Shirt Drop</div>
-  <div class="badge">TOP SECRET · FLIGHT CRG-2025</div>
-  <p class="hint">Tap your name — alone.<br>No peeking allowed.</p>
+  <div class="logo-wrap">
+    <div class="logo">CRINGE<br>SANTA<div class="glitch" aria-hidden="true">CRINGE<br>SANTA</div></div>
+    <span class="logo-plane">✈</span>
+  </div>
+  <div class="logo-sub">Airport Edition · The T-Shirt Drop · 2025</div>
+  <div class="badge">⚠ TOP SECRET · FLIGHT CRG-2025 ⚠</div>
+
+  <!-- progress dots -->
+  <div class="countdown">
+    <span class="cd-label">ASSIGNED</span>
+    <div class="cd-dots" id="cdDots">
+      <div class="cd-dot" id="dot-0"></div>
+      <div class="cd-dot" id="dot-1"></div>
+      <div class="cd-dot" id="dot-2"></div>
+      <div class="cd-dot" id="dot-3"></div>
+      <div class="cd-dot" id="dot-4"></div>
+    </div>
+    <span class="cd-label" id="cdCount">0 / 5</span>
+  </div>
+
+  <p class="hint">Tap your name — alone.<br>No peeking allowed. 🙈</p>
   <div class="names-list" id="nameList"></div>
 </div>
 
@@ -104,7 +189,7 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
   <div class="confirm-wrap">
     <div class="c-icon">🛂</div>
     <div class="c-q">Are you<br><em id="c-name">—</em>?</div>
-    <p class="c-note">Make sure nobody else is looking at your screen right now.</p>
+    <p class="c-note">Everyone else look away.<br>This is for your eyes only.</p>
     <div class="btn-row">
       <button class="btn" id="btn-no">✕ Not me</button>
       <button class="btn y" id="btn-yes">✓ That's me</button>
@@ -119,12 +204,12 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
     <div class="pass">
       <div class="p-hdr">
         <div><div class="p-lbl">gift buyer</div><div class="p-val" id="p-from">—</div></div>
-        <div style="text-align:right"><div class="p-lbl">flight</div><div class="p-val">CRG-2025</div></div>
+        <div style="text-align:right">
+          <div class="p-lbl">flight</div><div class="p-val">CRG-2025</div>
+          <div class="p-lbl" style="margin-top:6px">gate</div><div class="p-val">B7</div>
+        </div>
       </div>
-      <div>
-        <div class="p-lbl">you are buying for 🎯</div>
-        <div class="p-val big" id="p-to">—</div>
-      </div>
+      <div><div class="p-lbl">you are buying for 🎯</div><div class="p-val big" id="p-to">—</div></div>
       <div class="size-row">
         <div class="size-icon">👕</div>
         <div class="size-text">
@@ -133,29 +218,40 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
         </div>
       </div>
       <div class="p-mission">
-        <strong>MISSION BRIEFING</strong>
-        Find the most cringe t-shirt in their size.<br>
-        They WILL wear it at the airport. No exceptions.<br>
-        No mercy. Maximum embarrassment. 😈
+        <strong>⚡ MISSION BRIEFING</strong>
+        <p class="rule">Find the most cringe t-shirt in their size.</p>
+        <p class="rule">They WILL wear it at the airport. No exceptions.</p>
+        <p class="rule">No mercy. Maximum embarrassment. 😈</p>
+        <p class="rule">Budget: whatever it takes for peak cringe.</p>
       </div>
       <div class="bcode" id="bcode"></div>
     </div>
     <div class="pass-tear"></div>
-    <p class="r-note">Screenshot this or memorise it.<br>Once you close, it won't show again.</p>
-    <div class="r-btn"><button class="btn y" style="width:100%" id="btn-done">✓ Got it — close</button></div>
+    <p class="r-note">📸 Screenshot this or memorise it.<br>Once you close, it won't show again.</p>
+    <div class="r-btn"><button class="btn y" style="width:100%" id="btn-done">✓ Got it — I know my target</button></div>
   </div>
 </div>
 
-<!-- S4: Already done -->
+<!-- S4: Done + Rickroll -->
 <div class="screen hidden" id="s4">
   <div class="done-wrap">
-    <div class="done-icon">✅</div>
-    <div class="done-title">Already Done!</div>
-    <p class="done-note">You already got your assignment.<br>You know who you're buying for.<br><br>Now go find the most cringe<br>t-shirt possible. 😈</p>
+    <div class="rickroll-wrap">
+      <iframe id="rrFrame" src="" allow="autoplay" allowfullscreen></iframe>
+    </div>
+    <div class="done-title">✅ MISSION ACCEPTED</div>
+    <p class="done-note">You know your target.<br>Now go shopping. 😈</p>
+    <div class="done-rules">
+      <div class="r-title">📋 THE RULES</div>
+      <div class="done-rule">The t-shirt must be worn at the airport — no excuses.</div>
+      <div class="done-rule">The more cringe the better. Aim for maximum public embarrassment.</div>
+      <div class="done-rule">No spoilers — don't tell anyone who you got.</div>
+      <div class="done-rule">Size matters — check the boarding pass for their size.</div>
+      <div class="done-rule">You have until departure. Clock is ticking. ✈️</div>
+    </div>
   </div>
 </div>
 
-<footer>BOARDING GATE B7 · CRINGE AIRLINES</footer>
+<footer>CRINGE AIRLINES · GATE B7 · FLIGHT CRG-2025 · NO REFUNDS</footer>
 
 <!-- Firebase -->
 <script type="module">
@@ -175,7 +271,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
-// ── DATA ─────────────────────────────────────────────────
 const PEOPLE = {
   "Sanan":  { target:"Taqi",   size:"XL  ·  42 inch" },
   "Saalis": { target:"Sameer", size:"L" },
@@ -189,88 +284,109 @@ const EMOJIS = {"Sanan":"🎭","Saalis":"🤡","Aadil":"🦄","Taqi":"👽","Sam
 let picking = null;
 let doneState = {};
 
+// Particles
+const pc = document.getElementById("particles");
+for(let i=0;i<25;i++){
+  const p=document.createElement("div"); p.className="particle";
+  const colors=["#f2df00","#ff5500","#00d97e","#ff3333","#00aaff"];
+  p.style.cssText=`left:${Math.random()*100}%;--d:${6+Math.random()*10}s;--delay:${Math.random()*8}s;--drift:${(Math.random()-.5)*60}px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;`;
+  pc.appendChild(p);
+}
+
 function show(id){
   ["s0","s1","s2","s3","s4"].forEach(s =>
-    document.getElementById(s).classList.toggle("hidden", s !== id)
+    document.getElementById(s).classList.toggle("hidden", s!==id)
   );
   window.scrollTo(0,0);
 }
 
-// ── BUILD NAME LIST ───────────────────────────────────────
+function updateDots(state){
+  let count=0;
+  ORDER.forEach((n,i)=>{
+    const dot=document.getElementById("dot-"+i);
+    if(state[n]){dot.classList.add("lit");count++;}
+    else dot.classList.remove("lit");
+  });
+  document.getElementById("cdCount").textContent=count+" / 5";
+}
+
+// Build name list
 const list = document.getElementById("nameList");
-ORDER.forEach(name => {
+ORDER.forEach((name,i) => {
   const btn = document.createElement("button");
   btn.className = "name-btn";
-  btn.id = "btn-" + name;
+  btn.id = "btn-"+name;
   btn.dataset.name = name;
+  btn.style.setProperty("--delay", (i*.08+.1)+"s");
   btn.innerHTML =
-    `<span class="em">${EMOJIS[name]}</span>` +
-    `<span class="nl">${name}</span>` +
-    `<span class="ck">✓ done</span>`;
-  btn.addEventListener("click", () => {
-    if (doneState[name]) return;
-    picking = name;
-    document.getElementById("c-name").textContent = name;
+    `<span class="em">${EMOJIS[name]}</span>`+
+    `<span class="nl">${name}</span>`+
+    `<span class="ck">✓ done</span>`+
+    `<span class="arrow">→</span>`;
+  btn.addEventListener("click",()=>{
+    if(doneState[name]) return;
+    picking=name;
+    document.getElementById("c-name").textContent=name;
     show("s2");
   });
   list.appendChild(btn);
 });
 
-// ── LISTEN TO FIREBASE IN REAL TIME ──────────────────────
-// This means when anyone marks done, ALL phones update instantly
-const doneRef = ref(db, "cringe2025/done");
-onValue(doneRef, (snapshot) => {
-  doneState = snapshot.val() || {};
-  ORDER.forEach(name => {
-    const btn = document.getElementById("btn-" + name);
-    if (!btn) return;
-    if (doneState[name]) {
-      btn.classList.add("done");
-    } else {
-      btn.classList.remove("done");
-    }
+// Firebase real-time listener
+const doneRef = ref(db,"cringe2025/done");
+let firstLoad = true;
+onValue(doneRef, snap => {
+  doneState = snap.val() || {};
+  ORDER.forEach(name=>{
+    const btn=document.getElementById("btn-"+name);
+    if(!btn) return;
+    btn.classList.toggle("done", !!doneState[name]);
   });
-  // Show name list once we have data
-  if (document.getElementById("s0") &&
-      !document.getElementById("s0").classList.contains("hidden")) {
-    show("s1");
-  }
+  updateDots(doneState);
+  if(firstLoad){ firstLoad=false; show("s1"); }
 });
 
-// ── CONFIRM ───────────────────────────────────────────────
-document.getElementById("btn-no").addEventListener("click", () => {
-  picking = null; show("s1");
-});
+document.getElementById("btn-no").addEventListener("click",()=>{ picking=null; show("s1"); });
 
-document.getElementById("btn-yes").addEventListener("click", () => {
-  const info = PEOPLE[picking];
-  document.getElementById("p-from").textContent = picking.toUpperCase();
-  document.getElementById("p-to").textContent   = info.target.toUpperCase();
-  document.getElementById("p-size").textContent  = info.size;
+document.getElementById("btn-yes").addEventListener("click",()=>{
+  const info=PEOPLE[picking];
+  document.getElementById("p-from").textContent=picking.toUpperCase();
+  document.getElementById("p-to").textContent=info.target.toUpperCase();
+  document.getElementById("p-size").textContent=info.size;
   buildBarcode(); confetti(); show("s3");
 });
 
-// ── CLOSE REVEAL — writes to Firebase ────────────────────
-document.getElementById("btn-done").addEventListener("click", async () => {
-  await set(ref(db, "cringe2025/done/" + picking), true);
-  picking = null;
+document.getElementById("btn-done").addEventListener("click", async ()=>{
+  await set(ref(db,"cringe2025/done/"+picking), true);
+  // Rickroll!
+  document.getElementById("rrFrame").src =
+    "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=0&rel=0";
+  confetti(); confetti();
+  picking=null;
   show("s4");
 });
 
-// ── HELPERS ───────────────────────────────────────────────
 function buildBarcode(){
-  const bc = document.getElementById("bcode"); bc.innerHTML = "";
-  for(let i=0;i<52;i++){
-    const s = document.createElement("span");
-    s.style.cssText=`height:${18+Math.floor(Math.random()*28)}px;width:${Math.random()<.3?3:1}px;`;
+  const bc=document.getElementById("bcode"); bc.innerHTML="";
+  for(let i=0;i<55;i++){
+    const s=document.createElement("span");
+    s.style.cssText=`height:${16+Math.floor(Math.random()*30)}px;width:${Math.random()<.3?3:1}px;`;
     bc.appendChild(s);
   }
 }
+
 function confetti(){
-  const cols=["#f2df00","#ff5500","#00d97e","#ff3333","#f0ead8"];
-  for(let i=0;i<55;i++){
+  const cols=["#f2df00","#ff5500","#00d97e","#ff3333","#f0ead8","#00aaff"];
+  const shapes=["2px","50%","0"];
+  for(let i=0;i<70;i++){
     const d=document.createElement("div"); d.className="dot";
-    d.style.cssText=`left:${Math.random()*100}%;top:-12px;width:${3+Math.random()*8}px;height:${4+Math.random()*8}px;background:${cols[i%cols.length]};animation-delay:${Math.random()*.6}s;animation-duration:${1.8+Math.random()*1.8}s;`;
+    const size=3+Math.random()*10;
+    d.style.cssText=
+      `left:${Math.random()*100}%;top:-12px;`+
+      `width:${size}px;height:${size*(Math.random()>.5?.4:1)}px;`+
+      `background:${cols[i%cols.length]};`+
+      `border-radius:${shapes[Math.floor(Math.random()*shapes.length)]};`+
+      `--dur:${1.8+Math.random()*2}s;--del:${Math.random()*.8}s;`;
     document.body.appendChild(d);
     d.addEventListener("animationend",()=>d.remove());
   }
