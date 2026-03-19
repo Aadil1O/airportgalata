@@ -7,31 +7,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --bg:#0c0c0c;--card:#161616;--border:#252525;
-  --yellow:#f2df00;--orange:#ff5500;--green:#00d97e;--red:#ff3333;
-  --text:#f0ead8;--muted:#3a3a3a;--muted2:#777;
-}
+:root{--bg:#0c0c0c;--card:#161616;--border:#252525;--yellow:#f2df00;--orange:#ff5500;--green:#00d97e;--red:#ff3333;--text:#f0ead8;--muted:#3a3a3a;--muted2:#777;}
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;}
 body{display:flex;flex-direction:column;align-items:center;}
 .stripe{width:100%;height:4px;flex-shrink:0;background:repeating-linear-gradient(90deg,var(--yellow) 0 18px,var(--orange) 18px 36px,var(--green) 36px 54px,var(--red) 54px 72px);}
 .screen{width:100%;max-width:460px;padding:2rem 1.25rem;display:flex;flex-direction:column;align-items:center;}
 .screen.hidden{display:none;}
-
 .logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,15vw,5.5rem);line-height:.88;color:var(--yellow);text-shadow:3px 3px 0 var(--orange);text-align:center;margin:1.5rem 0 .4rem;}
 .logo-sub{font-size:.55rem;letter-spacing:.3em;color:var(--muted2);text-align:center;margin-bottom:.5rem;}
 .badge{display:inline-block;background:var(--orange);color:#000;font-size:.5rem;font-weight:700;letter-spacing:.25em;padding:3px 10px;margin-bottom:1.8rem;}
 .hint{font-size:.62rem;color:var(--muted2);text-align:center;line-height:2;letter-spacing:.05em;margin-bottom:1.4rem;}
-
 .names-list{width:100%;display:flex;flex-direction:column;gap:9px;}
 .name-btn{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:.08em;padding:.85rem 1.2rem;text-align:left;cursor:pointer;display:flex;align-items:center;gap:.75rem;transition:border-color .12s,background .12s;-webkit-tap-highlight-color:transparent;}
-.name-btn:hover{background:#1c1c1c;border-color:var(--yellow);}
-.name-btn.done{border-color:#1a3d2a;cursor:default;}
+.name-btn:hover:not(.done){background:#1c1c1c;border-color:var(--yellow);}
+.name-btn.done{border-color:#1a3d2a;pointer-events:none;}
 .name-btn.done .nl{color:var(--muted2);}
 .name-btn .em{font-size:1rem;}
-.name-btn .ck{margin-left:auto;font-size:.65rem;font-family:'Space Mono',monospace;color:var(--green);opacity:0;letter-spacing:.05em;}
+.name-btn .ck{margin-left:auto;font-size:.6rem;font-family:'Space Mono',monospace;color:var(--green);opacity:0;}
 .name-btn.done .ck{opacity:1;}
-
 .confirm-wrap{width:100%;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;}
 .c-icon{font-size:3.5rem;}
 .c-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,10vw,3.8rem);text-align:center;line-height:1.05;}
@@ -42,7 +35,6 @@ body{display:flex;flex-direction:column;align-items:center;}
 .btn:hover{background:#1c1c1c;color:var(--text);}
 .btn.y{border-color:var(--yellow);color:var(--yellow);}
 .btn.y:hover{background:var(--yellow);color:#000;}
-
 .reveal-wrap{width:100%;display:flex;flex-direction:column;align-items:center;padding-top:.3rem;}
 .eyes{font-size:.52rem;letter-spacing:.28em;color:var(--red);text-align:center;margin-bottom:1rem;animation:blink 1.1s step-end infinite;}
 @keyframes blink{50%{opacity:0;}}
@@ -52,23 +44,21 @@ body{display:flex;flex-direction:column;align-items:center;}
 .p-lbl{font-size:.46rem;letter-spacing:.25em;color:#888;text-transform:uppercase;margin-bottom:1px;}
 .p-val{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.05em;line-height:1;color:#111;}
 .p-val.big{font-size:2.8rem;color:var(--orange);}
-.size-box{background:#f5f0e0;border:1.5px dashed #bbb;padding:.75rem .9rem;margin-top:.9rem;display:flex;align-items:center;gap:.8rem;}
-.size-icon{font-size:1.4rem;}
-.size-info{display:flex;flex-direction:column;gap:2px;}
-.size-lbl{font-size:.46rem;letter-spacing:.25em;color:#888;text-transform:uppercase;}
-.size-val{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;color:#111;line-height:1.1;}
+.size-row{display:flex;align-items:center;gap:.75rem;margin-top:.9rem;padding:.75rem .9rem;border:1.5px dashed #bbb;background:#faf7ee;}
+.size-icon{font-size:1.5rem;}
+.size-text{display:flex;flex-direction:column;gap:2px;}
+.size-lbl{font-size:.44rem;letter-spacing:.25em;color:#888;text-transform:uppercase;}
+.size-val{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#111;letter-spacing:.05em;line-height:1.1;}
 .p-mission{background:#111;color:var(--yellow);padding:.75rem .9rem;margin-top:.9rem;font-size:.58rem;letter-spacing:.1em;line-height:1.9;}
 .p-mission strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:.1em;margin-bottom:.1rem;}
 .bcode{display:flex;gap:2px;align-items:flex-end;justify-content:center;margin-top:1.1rem;padding-top:1rem;border-top:1.5px dashed #bbb;}
 .bcode span{background:#111;display:inline-block;}
 .r-note{font-size:.58rem;color:var(--muted2);letter-spacing:.1em;text-align:center;line-height:2;margin-top:1.6rem;max-width:280px;}
 .r-btn{margin-top:1.2rem;width:100%;}
-
-.already-wrap{width:100%;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;}
-.already-icon{font-size:4rem;}
-.already-title{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--green);letter-spacing:.1em;}
-.already-note{font-size:.6rem;color:var(--muted2);letter-spacing:.12em;text-align:center;line-height:2;max-width:260px;}
-
+.done-wrap{width:100%;min-height:75vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;text-align:center;}
+.done-icon{font-size:5rem;}
+.done-title{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--green);letter-spacing:.1em;}
+.done-note{font-size:.62rem;color:var(--muted2);letter-spacing:.12em;line-height:2.2;max-width:260px;}
 .dot{position:fixed;pointer-events:none;border-radius:2px;animation:fall 2.4s ease-in forwards;}
 @keyframes fall{0%{transform:translateY(-10px) rotate(0);opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
 footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:center;padding:1.5rem 0;}
@@ -77,7 +67,6 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
 <body>
 <div class="stripe"></div>
 
-<!-- SCREEN 1: Pick name -->
 <div class="screen" id="s1">
   <div class="logo">CRINGE<br>SANTA ✈</div>
   <div class="logo-sub">Airport Edition · The T-Shirt Drop</div>
@@ -86,7 +75,6 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
   <div class="names-list" id="nameList"></div>
 </div>
 
-<!-- SCREEN 2: Confirm -->
 <div class="screen hidden" id="s2">
   <div class="confirm-wrap">
     <div class="c-icon">🛂</div>
@@ -99,7 +87,6 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
   </div>
 </div>
 
-<!-- SCREEN 3: Reveal -->
 <div class="screen hidden" id="s3">
   <div class="reveal-wrap">
     <div class="eyes">⚠ FOR YOUR EYES ONLY ⚠</div>
@@ -108,10 +95,13 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
         <div><div class="p-lbl">gift buyer</div><div class="p-val" id="p-from">—</div></div>
         <div style="text-align:right"><div class="p-lbl">flight</div><div class="p-val">CRG-2025</div></div>
       </div>
-      <div><div class="p-lbl">you are buying for 🎯</div><div class="p-val big" id="p-to">—</div></div>
-      <div class="size-box">
+      <div>
+        <div class="p-lbl">you are buying for 🎯</div>
+        <div class="p-val big" id="p-to">—</div>
+      </div>
+      <div class="size-row">
         <div class="size-icon">👕</div>
-        <div class="size-info">
+        <div class="size-text">
           <div class="size-lbl">their t-shirt size</div>
           <div class="size-val" id="p-size">—</div>
         </div>
@@ -120,7 +110,7 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
         <strong>MISSION BRIEFING</strong>
         Find the most cringe t-shirt in their size.<br>
         They WILL wear it at the airport. No exceptions.<br>
-        No mercy. Maximum embarrassment.
+        No mercy. Maximum embarrassment. 😈
       </div>
       <div class="bcode" id="bcode"></div>
     </div>
@@ -130,80 +120,74 @@ footer{font-size:.48rem;letter-spacing:.22em;color:var(--muted);text-align:cente
   </div>
 </div>
 
-<!-- SCREEN 4: Already done -->
 <div class="screen hidden" id="s4">
-  <div class="already-wrap">
-    <div class="already-icon">✅</div>
-    <div class="already-title">All Done!</div>
-    <p class="already-note">You already got your assignment.<br>You know who you're buying for.<br><br>Now go find the most cringe t-shirt possible. 😈</p>
+  <div class="done-wrap">
+    <div class="done-icon">✅</div>
+    <div class="done-title">Already Done!</div>
+    <p class="done-note">You already got your assignment.<br>You know who you're buying for.<br><br>Now go find the most cringe<br>t-shirt possible. 😈</p>
   </div>
 </div>
 
 <footer>BOARDING GATE B7 · CRINGE AIRLINES</footer>
 
 <script>
-// Fixed assignments — locked forever
-const A = {
-  "Sanan":  { target: "Taqi",   size: "XL — 42 inch" },
-  "Saalis": { target: "Sameer", size: "L" },
-  "Aadil":  { target: "Sanan",  size: "XL — 42 inch" },
-  "Taqi":   { target: "Saalis", size: "L" },
-  "Sameer": { target: "Aadil",  size: "L (safe bet across brands)" }
+const PEOPLE = {
+  "Sanan":  { target:"Taqi",   size:"XL  ·  42 inch" },
+  "Saalis": { target:"Sameer", size:"L" },
+  "Aadil":  { target:"Sanan",  size:"XL  ·  42 inch" },
+  "Taqi":   { target:"Saalis", size:"L" },
+  "Sameer": { target:"Aadil",  size:"L  ·  safe across brands" }
 };
-const NAMES = ["Sanan","Saalis","Aadil","Taqi","Sameer"];
+const ORDER  = ["Sanan","Saalis","Aadil","Taqi","Sameer"];
 const EMOJIS = {"Sanan":"🎭","Saalis":"🤡","Aadil":"🦄","Taqi":"👽","Sameer":"🎪"};
-const STORE = 'csg2025_done';
+const STORE  = "cringe_santa_2025";
 
+let done = {};
+try{ done = JSON.parse(localStorage.getItem(STORE)||"{}"); }catch(e){}
 let picking = null;
-let done = JSON.parse(localStorage.getItem(STORE) || '{}');
 
-function saveDone(){ localStorage.setItem(STORE, JSON.stringify(done)); }
-function show(id){ ['s1','s2','s3','s4'].forEach(s => document.getElementById(s).classList.toggle('hidden', s!==id)); window.scrollTo(0,0); }
+function save(){ try{ localStorage.setItem(STORE,JSON.stringify(done)); }catch(e){} }
+function show(id){ ["s1","s2","s3","s4"].forEach(s=>document.getElementById(s).classList.toggle("hidden",s!==id)); window.scrollTo(0,0); }
 
-// Build name list
-const list = document.getElementById('nameList');
-NAMES.forEach(n => {
-  const btn = document.createElement('button');
-  const isDone = !!done[n];
-  btn.className = 'name-btn' + (isDone ? ' done' : '');
-  btn.dataset.name = n;
-  btn.innerHTML = `<span class="em">${EMOJIS[n]}</span><span class="nl">${n}</span><span class="ck">✓ done</span>`;
-  btn.addEventListener('click', () => {
-    if (done[n]) return; // already done, ignore tap
-    picking = n;
-    document.getElementById('c-name').textContent = n;
-    show('s2');
+const list = document.getElementById("nameList");
+ORDER.forEach(name=>{
+  const btn = document.createElement("button");
+  btn.className = "name-btn"+(done[name]?" done":"");
+  btn.dataset.name = name;
+  btn.innerHTML = `<span class="em">${EMOJIS[name]}</span><span class="nl">${name}</span><span class="ck">✓ done</span>`;
+  btn.addEventListener("click",()=>{
+    if(done[name]) return;
+    picking=name;
+    document.getElementById("c-name").textContent=name;
+    show("s2");
   });
   list.appendChild(btn);
 });
 
-document.getElementById('btn-no').addEventListener('click', () => { picking = null; show('s1'); });
+document.getElementById("btn-no").addEventListener("click",()=>{ picking=null; show("s1"); });
 
-document.getElementById('btn-yes').addEventListener('click', () => {
-  const info = A[picking];
-  document.getElementById('p-from').textContent = picking.toUpperCase();
-  document.getElementById('p-to').textContent = info.target.toUpperCase();
-  document.getElementById('p-size').textContent = info.size;
-  buildBarcode(); confetti(); show('s3');
+document.getElementById("btn-yes").addEventListener("click",()=>{
+  const info=PEOPLE[picking];
+  document.getElementById("p-from").textContent=picking.toUpperCase();
+  document.getElementById("p-to").textContent=info.target.toUpperCase();
+  document.getElementById("p-size").textContent=info.size;
+  buildBarcode(); confetti(); show("s3");
 });
 
-document.getElementById('btn-done').addEventListener('click', () => {
-  done[picking] = true;
-  saveDone();
-  // Update button on name list
-  const btn = document.querySelector(`.name-btn[data-name="${picking}"]`);
-  if (btn) btn.classList.add('done');
-  picking = null;
-  show('s4');
+document.getElementById("btn-done").addEventListener("click",()=>{
+  done[picking]=true; save();
+  const btn=document.querySelector(`.name-btn[data-name="${picking}"]`);
+  if(btn) btn.classList.add("done");
+  picking=null; show("s4");
 });
 
 function buildBarcode(){
-  const bc = document.getElementById('bcode'); bc.innerHTML='';
-  for(let i=0;i<52;i++){const s=document.createElement('span');s.style.cssText=`height:${18+Math.floor(Math.random()*28)}px;width:${Math.random()<.3?3:1}px;`;bc.appendChild(s);}
+  const bc=document.getElementById("bcode"); bc.innerHTML="";
+  for(let i=0;i<52;i++){const s=document.createElement("span");s.style.cssText=`height:${18+Math.floor(Math.random()*28)}px;width:${Math.random()<.3?3:1}px;`;bc.appendChild(s);}
 }
 function confetti(){
-  const cols=['#f2df00','#ff5500','#00d97e','#ff3333','#f0ead8'];
-  for(let i=0;i<50;i++){const d=document.createElement('div');d.className='dot';d.style.cssText=`left:${Math.random()*100}%;top:-12px;width:${3+Math.random()*8}px;height:${4+Math.random()*8}px;background:${cols[i%cols.length]};animation-delay:${Math.random()*.6}s;animation-duration:${1.8+Math.random()*1.8}s;`;document.body.appendChild(d);d.addEventListener('animationend',()=>d.remove());}
+  const cols=["#f2df00","#ff5500","#00d97e","#ff3333","#f0ead8"];
+  for(let i=0;i<55;i++){const d=document.createElement("div");d.className="dot";d.style.cssText=`left:${Math.random()*100}%;top:-12px;width:${3+Math.random()*8}px;height:${4+Math.random()*8}px;background:${cols[i%cols.length]};animation-delay:${Math.random()*.6}s;animation-duration:${1.8+Math.random()*1.8}s;`;document.body.appendChild(d);d.addEventListener("animationend",()=>d.remove());}
 }
 </script>
 </body>
